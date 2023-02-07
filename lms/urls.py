@@ -8,6 +8,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.admin import autodiscover as django_autodiscover
 from django.urls import include, path, re_path
+from django.shortcuts import redirect
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.base import RedirectView
 from edx_api_doc_tools import make_docs_urls
@@ -93,11 +94,12 @@ notification_prefs_urls = [
 
 
 urlpatterns = [
-    path('', branding_views.index, name='root'),  # Main marketing page, or redirect to courseware
+    #path('', branding_views.index, name='root'),  # Main marketing page, or redirect to courseware
 
     path('', include('common.djangoapps.student.urls')),
     # TODO: Move lms specific student views out of common code
     re_path(r'^dashboard/?$', student_views.student_dashboard, name='dashboard'),
+    path('', lambda req: redirect('dashboard')), # CUSTOM DASHBOARD REDIRECT
     path('change_enrollment', student_views.change_enrollment, name='change_enrollment'),
 
     # Event tracking endpoints
